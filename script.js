@@ -13,9 +13,6 @@ let date1 = document.getElementById("date1");
 let date2 = document.getElementById("date2");
 let historicalRatesFirst = document.getElementById("historical-rates-first");
 let historicalRatesSecond = document.getElementById("historical-rates-second");
-
-
-// adding favorites
 let favorites = [];
 
 const myHeaders = new Headers();
@@ -109,6 +106,51 @@ function convertCurrency() {
 }
 
 
+function saveFavoriteCurrencyPair() {
+  const from = basecurrency.value;
+  const to = targetCurrency.value;
+  const favoritePair = `${from}/${to}`;
+
+  // Check if the favorite pair is already saved
+  if (favorites.includes(favoritePair)) {
+    console.log('Favorite pair already saved');
+    return;
+  }
+
+  // Add the favorite pair to the favorites array
+  favorites.push(favoritePair);
+
+  // Update the favorite currency pairs list
+  updateFavoriteCurrencyPairs();
+}
+
+function updateFavoriteCurrencyPairs() {
+  // Clear the existing list
+  favoriteCurrencyPairs.innerHTML = '';
+
+  // Create list items for each favorite pair
+  favorites.forEach(pair => {
+    const listItem = document.createElement('li');
+    listItem.textContent = pair;
+    favoriteCurrencyPairs.appendChild(listItem);
+  });
+}
+
+function handleFavoriteCurrencyClick(event) {
+  // Check if a favorite currency pair was clicked
+  if (event.target.tagName === 'LI') {
+    const pair = event.target.textContent;
+    const [from, to] = pair.split('/');
+
+    // Update the base and target currency dropdown menus
+    basecurrency.value = from;
+    targetCurrency.value = to;
+  }
+}
+
+
+
+
 document.addEventListener("DOMContentLoaded", function() {
   fetchAvailableCurrencies();
 });
@@ -117,8 +159,8 @@ amount.addEventListener("input", convertCurrency);
 basecurrency.addEventListener("change", convertCurrency);
 targetCurrency.addEventListener("change", convertCurrency);
 historicalRates.addEventListener("click", fetchHistoricalRates);
-// saveFavorite.addEventListener("click", A FUNCTION );
-// favoriteCurrencyPairs.addEventListener("click", A FUNCTION );
+saveFavorite.addEventListener("click", saveFavoriteCurrencyPair);
+favoriteCurrencyPairs.addEventListener("click", handleFavoriteCurrencyClick);
 
 
 
