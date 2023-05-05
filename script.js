@@ -111,24 +111,18 @@ function saveFavoriteCurrencyPair() {
   const to = targetCurrency.value;
   const favoritePair = `${from}/${to}`;
 
-  // Check if the favorite pair is already saved
   if (favorites.includes(favoritePair)) {
     console.log('Favorite pair already saved');
     return;
   }
 
-  // Add the favorite pair to the favorites array
   favorites.push(favoritePair);
-
-  // Update the favorite currency pairs list
   updateFavoriteCurrencyPairs();
 }
 
 function updateFavoriteCurrencyPairs() {
-  // Clear the existing list
   favoriteCurrencyPairs.innerHTML = '';
 
-  // Create list items for each favorite pair
   favorites.forEach(pair => {
     const listItem = document.createElement('li');
     listItem.textContent = pair;
@@ -137,19 +131,13 @@ function updateFavoriteCurrencyPairs() {
 }
 
 function handleFavoriteCurrencyClick(event) {
-  // Check if a favorite currency pair was clicked
   if (event.target.tagName === 'LI') {
     const pair = event.target.textContent;
     const [from, to] = pair.split('/');
-
-    // Update the base and target currency dropdown menus
     basecurrency.value = from;
     targetCurrency.value = to;
   }
 }
-
-
-
 
 document.addEventListener("DOMContentLoaded", function() {
   fetchAvailableCurrencies();
